@@ -1,7 +1,8 @@
 ### Custom Rules ###
 .idea/
-*.iml
 target/
+*.iml
+*.tmp.*
 
 
 

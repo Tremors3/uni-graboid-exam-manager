@@ -16,7 +16,7 @@ import java.util.List;
 public class PathManager {
     
     /** @brief Database per memorizzare i percorsi unici */
-    private final Database<UniquePath> database = new Database<>(".paths");
+    private final Database<UniquePath> database = new Database<>("saved_paths.tmp.data");
     
     /** @brief ID univoco del percorso attualmente selezionato */
     private String selectedUniqueID = null;
