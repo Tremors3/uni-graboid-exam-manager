@@ -1,6 +1,6 @@
 package myapp.mvc.model;
 
-import myapp.mvc.model.exam.HasUniqueId;
+import myapp.mvc.model.entity.exam.HasUniqueId;
 import myapp.util.UniqueList;
 
 import java.io.*;

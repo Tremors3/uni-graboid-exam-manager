@@ -4,11 +4,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import myapp.mvc.controller.ManageExams;
-import myapp.mvc.model.exam.ComposedExam;
-import myapp.mvc.model.exam.Exam;
-import myapp.mvc.view.dialog.AddExamDialog.tab.*;
+import myapp.mvc.model.entity.exam.ComposedExam;
+import myapp.mvc.model.entity.exam.Exam;
+import myapp.mvc.model.manager.ManageExams;
+import myapp.mvc.view.dialog.AddExamDialog.tab.AddComposedExamPane;
+import myapp.mvc.view.dialog.AddExamDialog.tab.AddPartialExamPane;
+import myapp.mvc.view.dialog.AddExamDialog.tab.AddSimpleExamPane;
 import myapp.mvc.view.dialog.CommonDialogInterface;
 
 /**

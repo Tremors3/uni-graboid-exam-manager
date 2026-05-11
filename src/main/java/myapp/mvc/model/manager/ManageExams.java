@@ -1,6 +1,6 @@
-package myapp.mvc.controller;
+package myapp.mvc.model.manager;
 
-import myapp.mvc.model.exam.Exam;
+import myapp.mvc.model.entity.exam.Exam;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package myapp.mvc.model.exam;
+package myapp.mvc.model.entity.exam;
 
 import myapp.util.UniqueList;
 

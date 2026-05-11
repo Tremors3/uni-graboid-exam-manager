@@ -11,7 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.util.StringConverter;
-import myapp.mvc.model.exam.Exam;
+import myapp.mvc.model.entity.exam.Exam;
 import myapp.mvc.view.dialog.CommonDialogInterface;
 
 import java.text.DecimalFormat;

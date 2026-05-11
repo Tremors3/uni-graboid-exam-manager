@@ -5,8 +5,8 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
-import myapp.mvc.controller.ManageExams;
-import myapp.mvc.model.exam.PartialExam;
+import myapp.mvc.model.entity.exam.PartialExam;
+import myapp.mvc.model.manager.ManageExams;
 import myapp.mvc.view.things.MyHSpacer;
 import myapp.mvc.view.things.MySpinner;
 
