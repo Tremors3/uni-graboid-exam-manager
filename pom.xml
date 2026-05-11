@@ -11,15 +11,16 @@
     <name>GraboidExamManager</name>
 
     <properties>
-        <!-- Versione Java -->
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
 
-        <!-- Versione JavaFX -->
+        <!-- Java Version -->
+        <maven.compiler.release>21</maven.compiler.release>
+
+        <!-- JavaFX Version -->
         <javafx.version>21.0.2</javafx.version>
 
         <!-- Encoding -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
     </properties>
 
     <dependencies>
@@ -31,7 +32,7 @@
             <version>${javafx.version}</version>
         </dependency>
 
-        <!-- JavaFX controls -->
+        <!-- JavaFX Controls -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -43,28 +44,23 @@
     <build>
         <plugins>
 
-            <!-- Compilazione Java -->
+            <!-- Java Compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
-
-                <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
-                </configuration>
             </plugin>
 
-            <!-- Plugin JavaFX -->
+            <!-- JavaFX Plugin -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
 
                 <configuration>
-                    <!-- App Entry Point -->
                     <mainClass>myapp.Starter</mainClass>
                 </configuration>
+
             </plugin>
 
         </plugins>
