@@ -1,6 +1,6 @@
 package myapp.util;
 
-import myapp.mvc.model.exam.HasUniqueId;
+import myapp.mvc.model.entity.exam.HasUniqueId;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package myapp.mvc.view.pane;
 
 import javafx.stage.Stage;
-import myapp.mvc.model.exam.Exam;
+import myapp.mvc.model.entity.exam.Exam;
 
 import java.util.function.Function;
 

@@ -1,6 +1,6 @@
 package myapp.mvc.model;
 
-import myapp.mvc.model.exam.HasUniqueId;
+import myapp.mvc.model.entity.exam.HasUniqueId;
 import myapp.util.UniqueList;
 
 import java.io.*;
@@ -20,16 +20,16 @@ import java.util.List;
 public class Database<T extends HasUniqueId> {
     
     /** @brief Nome predefinito del file del database. */
-    protected static final String DEFAULT_DATABASE_FILE_NAME = "session_recovery.tmp";
+    protected static final String DEFAULT_DATABASE_FILE_NAME = "session_recovery.tmp.data";
     
     /** @brief Nome predefinito del file temporaneo utilizzato per confronti. */
-    protected static final String DEFAULT_TEMPORARY_FILE_NAME = "compare_buffer.tmp";
-    
-    /** @brief Percorso predefinito del file del database. */
-    protected static final String DEFAULT_DATABASE_FILE_PATH = System.getProperty("user.dir") + '/' + DEFAULT_DATABASE_FILE_NAME;
+    protected static final String DEFAULT_TEMPORARY_FILE_NAME = "compare_buffer.tmp.data";
+
+    /** @brief Percorso predefinito in cui i file del database verranno salvati. */
+    protected static final String DEFAULT_DATA_FILE_PATH = System.getProperty("user.dir") + "/data/";
     
     /** @brief Percorso predefinito del file temporaneo. */
-    protected static final String DEFAULT_TEMPORARY_FILE_PATH = System.getProperty("user.dir") + '/' + DEFAULT_TEMPORARY_FILE_NAME;
+    protected static final String DEFAULT_TEMPORARY_FILE_PATH = DEFAULT_DATA_FILE_PATH + DEFAULT_TEMPORARY_FILE_NAME;
     
     /** @brief Nome del file corrente usato per il database. */
     protected String CURRENT_FILE_NAME;
@@ -45,16 +45,16 @@ public class Database<T extends HasUniqueId> {
      * Inizializza il database con il file predefinito.
      */
     public Database() {
-        this(Database.DEFAULT_DATABASE_FILE_PATH);
+        this(Database.DEFAULT_DATABASE_FILE_NAME);
     }
     
-    /**
+    /**DEFAULT_DATABASE_FILE_PATH
      * @brief Costruttore che accetta un file specifico.
      *
      * @param fileName Nome del file da usare per caricare e salvare i dati.
      */
     public Database(String fileName) {
-        this.CURRENT_FILE_NAME = fileName;
+        this.CURRENT_FILE_NAME = Database.DEFAULT_DATA_FILE_PATH + fileName;
         this.loadFromFile(this.CURRENT_FILE_NAME);
     }
     

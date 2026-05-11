@@ -1,9 +1,9 @@
-package myapp.mvc.controller;
+package myapp.mvc.model.manager;
 
 import myapp.mvc.model.Database;
-import myapp.mvc.model.exam.ComposedExam;
-import myapp.mvc.model.exam.Exam;
-import myapp.mvc.model.exam.SimpleExam;
+import myapp.mvc.model.entity.exam.ComposedExam;
+import myapp.mvc.model.entity.exam.Exam;
+import myapp.mvc.model.entity.exam.SimpleExam;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * eliminazione e recupero di esami, sia semplici che composti. Inoltre, gestisce la
  * serializzazione e deserializzazione degli esami da e verso file.
  */
-public class ControllerExams {
+public class ExamManager {
     
     /** @brief Database per memorizzare gli esami */
     private final Database<Exam> database = new Database<>();

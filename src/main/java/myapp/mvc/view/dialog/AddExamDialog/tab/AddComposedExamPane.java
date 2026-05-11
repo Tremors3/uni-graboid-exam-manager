@@ -8,10 +8,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
-import myapp.mvc.controller.ManageExams;
-import myapp.mvc.view.dialog.AddExamDialog.tab.common.PartialExamsLayout;
+import myapp.mvc.model.manager.ManageExams;
 import myapp.mvc.view.dialog.AddExamDialog.tab.common.PartialExamField;
+import myapp.mvc.view.dialog.AddExamDialog.tab.common.PartialExamsLayout;
 import myapp.mvc.view.dialog.CommonDialogInterface;
 import myapp.mvc.view.things.MyHSpacer;
 import myapp.mvc.view.things.MySpinner;

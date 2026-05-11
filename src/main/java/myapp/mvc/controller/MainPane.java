@@ -1,4 +1,4 @@
-package myapp.mvc.view;
+package myapp.mvc.controller;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -10,23 +10,25 @@ import javafx.scene.layout.VBox;
 import javafx.scene.transform.Scale;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import myapp.autosaver.Autosaver;
 import myapp.autosaver.ManageAutosaver;
-import myapp.mvc.controller.ControllerExams;
-import myapp.mvc.controller.ControllerPaths;
-import myapp.mvc.controller.ManageExams;
-import myapp.mvc.controller.ManagePaths;
-import myapp.mvc.model.exam.ComposedExam;
-import myapp.mvc.model.exam.Exam;
-import myapp.mvc.model.path.UniquePath;
+import myapp.mvc.model.entity.exam.ComposedExam;
+import myapp.mvc.model.entity.exam.Exam;
+import myapp.mvc.model.entity.path.UniquePath;
+import myapp.mvc.model.manager.ExamManager;
+import myapp.mvc.model.manager.ManageExams;
+import myapp.mvc.model.manager.ManagePaths;
+import myapp.mvc.model.manager.PathManager;
+import myapp.mvc.view.dialog.GraphDialog.GraphDialog;
 import myapp.mvc.view.dialog.ManagePathsDialog.ManagePathsDialog;
 import myapp.mvc.view.dialog.SaveOnExitDialog;
-import myapp.mvc.view.dialog.GraphDialog.GraphDialog;
 import myapp.mvc.view.pane.*;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -51,9 +53,9 @@ public class MainPane extends Application {
 
     // ------------ Controller
     /** @brief Controllore per la gestione degli esami. */
-    private static final ControllerExams controllerExams = new ControllerExams();
+    private static final ExamManager examManager = new ExamManager();
     /** @brief Controllore per la gestione dei percorsi. */
-    private static final ControllerPaths controllerPaths = new ControllerPaths();
+    private static final PathManager pathManager = new PathManager();
 
     // ------------ Interfacce
     /** @brief Interfaccia per la gestione degli esami. */
@@ -101,8 +103,8 @@ public class MainPane extends Application {
     private void startThreads() {
         saver.setAutosaverJob(() -> {
             System.out.print("Salvataggio... "); // DEBUG
-            synchronized (controllerExams) {
-                controllerExams.saveExamsToFile();
+            synchronized (examManager) {
+                examManager.saveExamsToFile();
             }
             System.out.println("Salvataggio Avvenuto!"); //DEBUG
         });
@@ -393,7 +395,7 @@ public class MainPane extends Application {
             public void hidePartialExam() {
                 bottomLayout.hide();
             }
-        });
+        });bottomLayout.hide();
         
         // Interfacce di scopi specifici
         
@@ -465,7 +467,7 @@ public class MainPane extends Application {
              */
             @Override
             public String addSimpleExam(String username, String surname, String teaching, int credits, int grade, boolean honors) {
-                String uniqueId = MainPane.controllerExams.addSimpleExam(username, surname, teaching, credits, grade, honors);
+                String uniqueId = MainPane.examManager.addSimpleExam(username, surname, teaching, credits, grade, honors);
                 updateExamTable();
                 updModFlag();
                 return uniqueId;
@@ -484,7 +486,7 @@ public class MainPane extends Application {
              */
             @Override
             public String addComposedExam(String username, String surname, String teaching, int credits) {
-                String uniqueId = MainPane.controllerExams.addComposedExam(username, surname, teaching, credits);
+                String uniqueId = MainPane.examManager.addComposedExam(username, surname, teaching, credits);
                 updateExamTable();
                 updModFlag();
                 return uniqueId;
@@ -505,7 +507,7 @@ public class MainPane extends Application {
              */
             @Override
             public void modSimpleExam(String uniqueId, String username, String surname, String teaching, int credits, int grade, boolean honors) {
-                MainPane.controllerExams.modSimpleExam(uniqueId, username, surname, teaching, credits, grade, honors);
+                MainPane.examManager.modSimpleExam(uniqueId, username, surname, teaching, credits, grade, honors);
                 updateExamTable();
                 updModFlag();
             }
@@ -523,7 +525,7 @@ public class MainPane extends Application {
              */
             @Override
             public void modComposedExam(String uniqueId, String username, String surname, String teaching, int credits) {
-                MainPane.controllerExams.modComposedExam(uniqueId, username, surname, teaching, credits);
+                MainPane.examManager.modComposedExam(uniqueId, username, surname, teaching, credits);
                 updateExamTable();
                 updModFlag();
             }
@@ -540,7 +542,7 @@ public class MainPane extends Application {
              */
             @Override
             public String addIntermediateGrade(String examUniqueId, int grade, int weight) {
-                String uniqueId = MainPane.controllerExams.addIntermediateGrade(examUniqueId, grade, weight);
+                String uniqueId = MainPane.examManager.addIntermediateGrade(examUniqueId, grade, weight);
                 updatePartialExamTable(examUniqueId);
                 updateExamTable();
                 updModFlag();
@@ -557,10 +559,10 @@ public class MainPane extends Application {
              */
             @Override
             public void delIntermediateGrade(String examUniqueId, String gradeUniqueId) {
-                MainPane.controllerExams.delIntermediateGrade(examUniqueId, gradeUniqueId);
+                MainPane.examManager.delIntermediateGrade(examUniqueId, gradeUniqueId);
                 
                 // Controlla se l'esame parziale eliminato era l'ultimo. Se sì, elimina anche l'esame composto associato.
-                if (MainPane.controllerExams.getExam(examUniqueId) instanceof ComposedExam ce && (ce.getPartialExams().isEmpty() || ce.getPartialExams().size() < 2)) {
+                if (MainPane.examManager.getExam(examUniqueId) instanceof ComposedExam ce && (ce.getPartialExams().isEmpty() || ce.getPartialExams().size() < 2)) {
                     delExam(examUniqueId);
                 }
 
@@ -581,7 +583,7 @@ public class MainPane extends Application {
              */
             @Override
             public void modIntermediateGrade(String examUniqueId, String gradeUniqueId, int grade, int weight) {
-                MainPane.controllerExams.modIntermediateGrade(examUniqueId, gradeUniqueId, grade, weight);
+                MainPane.examManager.modIntermediateGrade(examUniqueId, gradeUniqueId, grade, weight);
                 updatePartialExamTable(examUniqueId);
                 updateExamTable();
                 updModFlag();
@@ -595,7 +597,7 @@ public class MainPane extends Application {
              */
             @Override
             public Exam getExam(String uniqueId) {
-                return MainPane.controllerExams.getExam(uniqueId);
+                return MainPane.examManager.getExam(uniqueId);
             }
             
             /**
@@ -605,7 +607,7 @@ public class MainPane extends Application {
              */
             @Override
             public List<Exam> getAllExams() {
-                return MainPane.controllerExams.getAllExams();
+                return MainPane.examManager.getAllExams();
             }
             
             /**
@@ -617,7 +619,7 @@ public class MainPane extends Application {
              */
             @Override
             public void delExam(String uniqueId) {
-                MainPane.controllerExams.delExam(uniqueId);
+                MainPane.examManager.delExam(uniqueId);
                 updateExamTable();
                 updModFlag();
             }
@@ -629,7 +631,7 @@ public class MainPane extends Application {
              */
             @Override
             public void saveExams() {
-                MainPane.controllerExams.saveExamsToFile();
+                MainPane.examManager.saveExamsToFile();
                 updModFlag();
             }
             
@@ -642,7 +644,7 @@ public class MainPane extends Application {
              */
             @Override
             public void saveExams(String path) {
-                MainPane.controllerExams.saveExamsToFile(path);
+                MainPane.examManager.saveExamsToFile(path);
                 updModFlag();
             }
             
@@ -666,7 +668,7 @@ public class MainPane extends Application {
              */
             @Override
             public void loadExams() {
-                MainPane.controllerExams.loadExamsFromFile();
+                MainPane.examManager.loadExamsFromFile();
                 updateExamTable();
                 updModFlag();
             }
@@ -680,7 +682,7 @@ public class MainPane extends Application {
              */
             @Override
             public void loadExams(String path) {
-                MainPane.controllerExams.loadExamsFromFile(path);
+                MainPane.examManager.loadExamsFromFile(path);
                 updateExamTable();
                 updModFlag();
             }
@@ -771,7 +773,7 @@ public class MainPane extends Application {
             @Override
             public void updModFlag() {
                 if (null == managePaths.getSelected()) return;
-                controllerExams.setModFlag(!compareFileToDatabase(managePaths.getPath(managePaths.getSelected()).getPath()));
+                examManager.setModFlag(!compareFileToDatabase(managePaths.getPath(managePaths.getSelected()).getPath()));
                 updateModifiedFlag();
             }
             
@@ -782,7 +784,7 @@ public class MainPane extends Application {
              */
             @Override
             public boolean getModFlag() {
-                return controllerExams.getModFlag();
+                return examManager.getModFlag();
             }
             
             /**
@@ -795,7 +797,7 @@ public class MainPane extends Application {
              */
             @Override
             public boolean compareFileToDatabase(String path) {
-                return controllerExams.compareFileToDatabase(path);
+                return examManager.compareFileToDatabase(path);
             }
         };
     }
@@ -821,7 +823,7 @@ public class MainPane extends Application {
              */
             @Override
             public String addPath(String path) {
-                String uniqueId = controllerPaths.addPath(path);
+                String uniqueId = pathManager.addPath(path);
                 savePaths();
                 return uniqueId;
             }
@@ -836,7 +838,7 @@ public class MainPane extends Application {
              */
             @Override
             public UniquePath getPath(String uniqueId) {
-                return controllerPaths.getPath(uniqueId);
+                return pathManager.getPath(uniqueId);
             }
             
             /**
@@ -848,7 +850,7 @@ public class MainPane extends Application {
              */
             @Override
             public List<UniquePath> getAllPaths() {
-                return controllerPaths.getAllPaths();
+                return pathManager.getAllPaths();
             }
             
             /**
@@ -861,7 +863,7 @@ public class MainPane extends Application {
              */
             @Override
             public void delPath(String uniqueId) {
-                controllerPaths.delPath(uniqueId);
+                pathManager.delPath(uniqueId);
                 savePaths();
                 updatePathTable();
                 updateSelectedFile();
@@ -884,7 +886,7 @@ public class MainPane extends Application {
              */
             @Override
             public void savePaths() {
-                controllerPaths.savePathsToFile();
+                pathManager.savePathsToFile();
             }
             
             /**
@@ -896,7 +898,7 @@ public class MainPane extends Application {
              */
             @Override
             public void savePaths(String path) {
-                controllerPaths.savePathsToFile(path);
+                pathManager.savePathsToFile(path);
             }
             
             /**
@@ -906,7 +908,7 @@ public class MainPane extends Application {
              */
             @Override
             public void delSelected() {
-                controllerPaths.delSelectedUniqueID();
+                pathManager.delSelectedUniqueID();
                 updateSelectedFile();
             }
             
@@ -919,7 +921,7 @@ public class MainPane extends Application {
              */
             @Override
             public String getSelected() {
-                return controllerPaths.getSelectedUniqueID();
+                return pathManager.getSelectedUniqueID();
             }
             
             /**
@@ -931,7 +933,7 @@ public class MainPane extends Application {
              */
             @Override
             public void setSelected(String uniqueId) {
-                controllerPaths.setSelectedUniqueID(uniqueId);
+                pathManager.setSelectedUniqueID(uniqueId);
                 updateSelectedFile();
             }
             
@@ -957,7 +959,7 @@ public class MainPane extends Application {
     private void updateExamTable() {
         this.centerLayout.setData(
             FXCollections.observableList(
-                MainPane.controllerExams.getAllExams()
+                MainPane.examManager.getAllExams()
             ) // Conversione di List<Exam> in ObservableList<Exam>
         );
     }
@@ -971,7 +973,7 @@ public class MainPane extends Application {
      * @param uniqueExamId ID univoco dell'esame composto per il quale aggiornare la tabella degli esami parziali.
      */
     private void updatePartialExamTable(String uniqueExamId) {
-        if (MainPane.controllerExams.getExam(uniqueExamId) instanceof ComposedExam ce) {
+        if (MainPane.examManager.getExam(uniqueExamId) instanceof ComposedExam ce) {
             this.bottomLayout.setData(
                 FXCollections.observableList(ce.getPartialExams()), uniqueExamId
             );
@@ -987,7 +989,7 @@ public class MainPane extends Application {
     private void updatePathTable() {
         this.topLayout.setPathData(
             FXCollections.observableList(
-                MainPane.controllerPaths.getAllPaths()
+                MainPane.pathManager.getAllPaths()
             ) // Conversione di List<UniquePath> in ObservableList<UniquePath>
         );
     }

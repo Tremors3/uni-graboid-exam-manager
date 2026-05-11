@@ -4,9 +4,9 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import myapp.autosaver.ManageAutosaver;
-import myapp.mvc.controller.ManageExams;
-import myapp.mvc.controller.ManagePaths;
-import myapp.mvc.model.path.UniquePath;
+import myapp.mvc.model.entity.path.UniquePath;
+import myapp.mvc.model.manager.ManageExams;
+import myapp.mvc.model.manager.ManagePaths;
 import myapp.mvc.view.dialog.ManagePathsDialog.ManagePathsDialog;
 
 /**

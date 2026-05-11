@@ -1,4 +1,4 @@
-package myapp.mvc.model.exam;
+package myapp.mvc.model.entity.exam;
 
 /**
  * @brief Interfaccia funzionale per ottenere un identificativo univoco.

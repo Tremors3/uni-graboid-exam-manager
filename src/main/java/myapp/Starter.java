@@ -1,6 +1,6 @@
 package myapp;
 
-import myapp.mvc.view.MainPane;
+import myapp.mvc.controller.MainPane;
 
 /**
  * @brief Classe di avvio dell'applicazione.

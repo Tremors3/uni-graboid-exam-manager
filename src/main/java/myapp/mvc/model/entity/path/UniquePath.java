@@ -1,6 +1,6 @@
-package myapp.mvc.model.path;
+package myapp.mvc.model.entity.path;
 
-import myapp.mvc.model.exam.HasUniqueId;
+import myapp.mvc.model.entity.exam.HasUniqueId;
 
 import java.io.Serializable;
 import java.util.UUID;

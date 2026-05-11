@@ -1,7 +1,7 @@
-package myapp.mvc.controller;
+package myapp.mvc.model.manager;
 
 import myapp.mvc.model.Database;
-import myapp.mvc.model.path.UniquePath;
+import myapp.mvc.model.entity.path.UniquePath;
 
 import java.util.Iterator;
 import java.util.List;
@@ -9,14 +9,14 @@ import java.util.List;
 /**
  * @brief Classe di controllo per la gestione dei percorsi unici.
  *
- * La classe `ControllerPaths` gestisce le operazioni sui percorsi unici, inclusi aggiunta,
+ * La classe `PathManager` gestisce le operazioni sui percorsi unici, inclusi aggiunta,
  * modifica, eliminazione e recupero dei percorsi. Inoltre, gestisce la serializzazione e
  * deserializzazione dei percorsi da e verso file.
  */
-public class ControllerPaths {
+public class PathManager {
     
     /** @brief Database per memorizzare i percorsi unici */
-    private final Database<UniquePath> database = new Database<>(".paths");
+    private final Database<UniquePath> database = new Database<>("saved_paths.tmp.data");
     
     /** @brief ID univoco del percorso attualmente selezionato */
     private String selectedUniqueID = null;

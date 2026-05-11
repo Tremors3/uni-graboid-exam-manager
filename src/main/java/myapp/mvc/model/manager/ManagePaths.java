@@ -1,6 +1,6 @@
-package myapp.mvc.controller;
+package myapp.mvc.model.manager;
 
-import myapp.mvc.model.path.UniquePath;
+import myapp.mvc.model.entity.path.UniquePath;
 
 import java.util.List;
 
